@@ -24,7 +24,9 @@ for row in desired_table.find_all('tr')[0:]:
     data.append(row_data)
 df = pd.DataFrame(data, columns=['Ranking', 'Country', 'Price'])
 print(df.head(10))
-3. **Step 2:** - With help from the example, used more imports that would be helpful later on.
+
+
+   **Step 2:** - With help from the example, used more imports that would be helpful later on.
 from datascience import *
 import numpy as np
 import re
@@ -40,13 +42,17 @@ def scrape_table(table):
     df = pd.read_html(str(table))
     df = pd.DataFrame(df[0])
     return Table.from_df(df)
-5. **Step 3:** - Scraped data from the water bottle pricing based on the different countries.
+ 
+ 
+ **Step 3:** - Scraped data from the water bottle pricing based on the different countries.
 water_bottle_pricing_url = 'https://www.numbeo.com/cost-of-living/country_price_rankings?itemId=7'
 water_bottle_request = requests.get(water_bottle_pricing_url)
 water_bottle_soup = BeautifulSoup(water_bottle_request.text, 'html.parser')
 water_bottle_table = water_bottle_soup.find("table")
 water_bottle_df = scrape_table(water_bottle_table)
 print(water_bottle_df.head())
+
+
 **Step 4:** - Here I cleaned some of the data by dropping an uneccessary column and moved onto converting the currency. 
 water_bottle_pricing = water_bottle_pricing.drop(1) 
 currencies = make_array()
@@ -60,16 +66,21 @@ for each_country in water_bottle_pricing.column("Price"):
         gst_rates = np.append(gst_rates, '0%')
 water_bottle_pricing = water_bottle_pricing.with_column("Currency", currencies)
 water_bottle_pricing = water_bottle_pricing.with_column("GST Rate", gst_rates)
+
+
 **Step 5:** - Then I took local prices with value added tax and applied a function to the price column.
 def tidy_local_price(input):
     return re.findall("\d+", input.split("VAT")[0].split(" ")[1])[0] 
     water_bottle_pricing["Price"] = water_bottle_pricing.apply(tidy_local_price, "Price")
+
+
 **Step 6:** - I set the currency_url to a URL that gave info on the different currencies. I then proceeded to give a get request and ended using the scrape table function.
 currency_url = "https://currencyscoop.com/supported-currencies"
 currency_request = request.get(currency_url)
 currency_soup = BeautifulSoup(currency_request.text, 'html.parser')
 currency_table = currency_soup.find("table")
 currency_codes = scrape_table(currency_table)
+
 
 **Step 7:** - I extracted the currency and put them into a new column. I then cleaned up the country names in my list. I then finished off by using the examples help to grab the currency of countries by their currency symbol.
 codes = make_array()
@@ -87,6 +98,8 @@ def strip_code(country):
         index_match = np.where(currency_codes["Countries Used"] == country_match)[0][0]
         code = currency_codes.row(index_match)[2]
     return code
+
+
 **Step 8:** - I created a new column that contains currency codes. In this set of code I also converted prices to USD and stored tax prices into a new column called USD Conversion.
 water_bottle_pricing = water_bottle_pricing.with_column("Code", water_bottle_pricing.apply(get_currency_code, "Country", "Currency"))
 water_bottle_pricing = water_bottle_pricing.exclude(36)
@@ -97,6 +110,8 @@ for x in range(water_bottle_df.shape[0]):
     with_tax = float(water_bottle_df.iloc[x, 2]) + float(water_bottle_df.iloc[x, 2]) * (float(water_bottle_df.iloc[x, 4].strip("%")) / 100)
     water_bottle_pricing = np.append(water_bottle_pricing, convert(water_bottle_df.iloc[x, 5], 'USD', with_tax))
   water_bottle_df["USD Conversion"] = water_bottle_pricing
+
+
 **Step 9** - Then I finished off by calulating the differences with taxes and without.
 water_bottle_differences = water_bottle_pricing["USD Conversion"]
 water_bottle_pricing["Difference"] = water_bottle_differences
