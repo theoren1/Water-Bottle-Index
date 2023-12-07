@@ -7,8 +7,8 @@ The website that showcases my water bottle index!
 I'm excited to present the Water Bottle Index. I scavanged the internet for different products to base my index off of whilst in the end choosing to do it on watter bottles. I chose water bottles as it is a basic neccessity to every human on Earth! It was a fairly easy decision as everyone is familiar with this product and I can guarantee everyone in this classroom has purchased a plastic water bottle before. Whether stocking up for emergency, a quick gas station stop, or a quick visit to the schools vending machine, my product is apparent in everyones lives. In this assignment I dove into factors influencing the cost of this essential product and share insights gained from the data.
 
 ## My code and motivations behind it
-
-Each step of my coding is documented inside of my google colab https://colab.research.google.com/drive/1P1OcDHRE3r-NIw2I4y-MvGD9--X4dfZM#scrollTo=peX9QGCrnSTK 
+My coding and full findings are presented here on this google colab page:
+https://colab.research.google.com/drive/1P1OcDHRE3r-NIw2I4y-MvGD9--X4dfZM#scrollTo=peX9QGCrnSTK 
 But here is some short explanation behind each of the steps I took
 
 1. **Step 1:** - Here I grabbed my websites URL that I would be using and printed the results from the chart into my notebook.
